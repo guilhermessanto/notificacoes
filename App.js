@@ -5,6 +5,7 @@ import {
   Button,
   SafeAreaView,
   StatusBar,
+  Platform,
 } from "react-native";
 
 import * as Notifications from "expo-notifications";
@@ -41,20 +42,21 @@ export default function App() {
     });
     /* Ouvinte de evento para as respostas dads ás notificações,ou seja, quando o usuario interage(toca) na notificação */
     Notifications.addNotificationResponseReceivedListener((resposta) => {
-      console.log(resposta);
+      console.log(resposta.notification.request.content.data);
     });
   }, []);
 
   const enviarMensagem = async () => {
     const mensagem = {
-      title: "Lembrete!",
+      title: "Lembrete!  🤬 ",
       body: "Não esqueça de tomar água",
+      data: { usuario: "Jorge", cidade: "São gonçalo" },
+      sound: Platform.OS === "ios" ? "default" : "",
     };
     /* Função de agendamento de notificações */
     await Notifications.scheduleNotificationAsync({
       content: mensagem,
       trigger: { seconds: 2 },
-      sound: "default",
     });
   };
 
